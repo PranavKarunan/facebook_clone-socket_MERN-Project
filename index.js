@@ -1,6 +1,6 @@
-const io = require("socket.io")(process.env.PORT, {
+const io = require("socket.io")(9000, {
   cors: {
-    origin: process.env.FRONT_END_URL,
+    origin: "http://localhost:3000",
   },
 });
 
@@ -24,8 +24,9 @@ io.on("connection", (socket) => {
 
   //take userId and socketId from user
   socket.on("addUser", (userId) => {
+   
     addUser(userId, socket.id);
-
+    console.log("user connected");
     io.emit("getUsers", users);
   });
 
@@ -41,6 +42,7 @@ io.on("connection", (socket) => {
   //when disconnect
   socket.on("disconnect", () => {
     console.log("a user disconnected!");
+    
     removeUser(socket.id);
     io.emit("getUsers", users);
   });
